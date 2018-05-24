@@ -3,13 +3,14 @@
 set -eu
 
 readonly TEMP_RESPONSE_FILE="register_response"
-readonly THING_CREDENTIAL_DIR="thing_credentials"
+readonly THING_CREDENTIAL_DIR="certs"
 
 readonly REGISTER_URL="http://192.168.100.105:3000/things.json"
 readonly SERIAL_NO=`source ./get_cpu_serial.sh`
 readonly MODEL="Raspberry Pi Zero WH"
 readonly DATA="'{\"thing\": {\"serial_no\": \"${SERIAL_NO}\", \"model\": \"${MODEL}\"}}'"
 
+readonly ROOT_CA_URL="https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem"
 
 eval "curl -sS -H 'Content-Type:application/json' -XPOST -d ${DATA} ${REGISTER_URL} > ${TEMP_RESPONSE_FILE}"
 
@@ -28,7 +29,7 @@ else
     echo "${TEMP_RESPONSE_FILE} is not found. Register thing may have failed."
 fi
 
-
+curl ${ROOT_CA_URL} >> ${THING_CREDENTIAL_DIR}/root-CA.crt
 
 
 
