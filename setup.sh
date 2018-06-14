@@ -3,7 +3,7 @@
 sudo apt-get update
 
 # install required packages
-sudo apt-get install -y emacs jq
+sudo apt-get install -y emacs jq eject
 
 # install node
 sudo apt-get install -y nodejs npm
