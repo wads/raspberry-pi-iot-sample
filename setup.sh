@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 sudo timedatectl set-timezone Asia/Tokyo
 sudo sed -i -e '/ja_JP.UTF-8/s/^# *//' /etc/locale.gen

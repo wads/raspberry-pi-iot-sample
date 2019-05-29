@@ -1,16 +1,16 @@
- #!/bin/bash
+#!/bin/bash
 
 set -eu
 
 readonly TEMP_RESPONSE_FILE="register_response"
-readonly THING_CREDENTIAL_DIR="certs"
+readonly THING_CREDENTIAL_DIR="cert"
 
-readonly REGISTER_URL="http://192.168.100.105:3000/things.json"
+readonly REGISTER_URL="http://13.231.184.83/v1/things"
 readonly SERIAL_NO=`source ./get_cpu_serial.sh`
 readonly MODEL="Raspberry Pi Zero WH"
-readonly DATA="'{\"thing\": {\"serial_no\": \"${SERIAL_NO}\", \"model\": \"${MODEL}\"}}'"
+readonly DATA="'{\"SerialNo\": \"${SERIAL_NO}\", \"Model\": \"${MODEL}\"}'"
 
-readonly ROOT_CA_URL="https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem"
+readonly ROOT_CA_URL="https://www.amazontrust.com/repository/AmazonRootCA1.pem"
 
 eval "curl -sS -H 'Content-Type:application/json' -XPOST -d ${DATA} ${REGISTER_URL} > ${TEMP_RESPONSE_FILE}"
 
@@ -19,17 +19,17 @@ if [ -f ./${TEMP_RESPONSE_FILE} ]; then
        mkdir ${THING_CREDENTIAL_DIR}
     fi
 
-    cat ./${TEMP_RESPONSE_FILE} |jq -r '.certificate_arn' > ${THING_CREDENTIAL_DIR}/certificate_arn
-    cat ./${TEMP_RESPONSE_FILE} |jq -r '.certificate_id' > ${THING_CREDENTIAL_DIR}/certificate_id
-    cat ./${TEMP_RESPONSE_FILE} |jq -r '.certificate_pem' > ${THING_CREDENTIAL_DIR}/certificate_pem
-    cat ./${TEMP_RESPONSE_FILE} |jq -r '.private_key' > ${THING_CREDENTIAL_DIR}/private_key
+    cat ./${TEMP_RESPONSE_FILE} |jq -r '.CertificateArn' > ${THING_CREDENTIAL_DIR}/certificate_arn
+    cat ./${TEMP_RESPONSE_FILE} |jq -r '.CertificateId' > ${THING_CREDENTIAL_DIR}/certificate_id
+    cat ./${TEMP_RESPONSE_FILE} |jq -r '.CertificatePem' > ${THING_CREDENTIAL_DIR}/certificate.pem
+    cat ./${TEMP_RESPONSE_FILE} |jq -r '.PrivateKey' > ${THING_CREDENTIAL_DIR}/private.key
 
     rm ./${TEMP_RESPONSE_FILE}
 else
     echo "${TEMP_RESPONSE_FILE} is not found. Register thing may have failed."
 fi
 
-curl ${ROOT_CA_URL} >> ${THING_CREDENTIAL_DIR}/root-CA.crt
+curl ${ROOT_CA_URL} >> ${THING_CREDENTIAL_DIR}/amazon_root_ca1.pem
 
 
 
