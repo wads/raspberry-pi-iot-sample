@@ -1,3 +1,4 @@
+'use strict';
 const awsIot = require('aws-iot-device-sdk');
 const execSync = require('child_process').execSync;
 
@@ -9,7 +10,6 @@ const thingShadows = awsIot.thingShadow({
 });
 
 const thingName = execSync('/bin/bash ./get_cpu_serial.sh').toString().trim();
-//const thingName = "000000000348804a";
 
 let value1 = null;
 let value2 = null;
