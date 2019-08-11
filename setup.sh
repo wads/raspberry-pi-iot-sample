@@ -7,8 +7,8 @@ sudo locale-gen
 # UART
 # see https://gist.github.com/CLCL/e0f840461e20a3a83179b4941d45c203
 echo "
-> # UART
-> enable_uart=1" | sudo tee -a /boot/config.txt
+# UART
+enable_uart=1" | sudo tee -a /boot/config.txt
 sudo raspi-config nonint do_serial 1
 sudo sed -i -e 's/enable_uart=0/enable_uart=1/' /boot/config.txt
 sudo systemctl stop serial-getty@ttyS0.service
