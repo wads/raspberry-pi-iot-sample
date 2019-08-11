@@ -5,7 +5,7 @@ set -eu
 readonly TEMP_RESPONSE_FILE="register_response"
 readonly THING_CREDENTIAL_DIR="cert"
 
-readonly REGISTER_URL="http://13.231.184.83/v1/things"
+readonly REGISTER_URL="http://example.com/things"
 readonly SERIAL_NO=`source ./get_cpu_serial.sh`
 readonly MODEL="Raspberry Pi Zero WH"
 readonly DATA="'{\"SerialNo\": \"${SERIAL_NO}\", \"Model\": \"${MODEL}\"}'"

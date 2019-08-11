@@ -1,4 +1,5 @@
 'use strict';
+
 const awsIot = require('aws-iot-device-sdk');
 const execSync = require('child_process').execSync;
 
@@ -18,33 +19,33 @@ var clientTokenUpdate;
 
 thingShadows.on('connect', function() {
     thingShadows.register( thingName, {}, function() {
-	console.log('register thing shadows ' + thingName);
+        console.log('register thing shadows ' + thingName);
     });
 });
 
 thingShadows.on('status',
-		function(thingName, stat, clientToken, stateObject) {
-		    console.log('received '+stat+' on '+thingName+': '+
-				JSON.stringify(stateObject));
-		});
+                function(thingName, stat, clientToken, stateObject) {
+                    console.log('received '+stat+' on '+thingName+': '+
+                                JSON.stringify(stateObject));
+                });
 
 thingShadows.on('delta',
-		function(thingName, stateObject) {
-		    console.log('received delta on '+thingName+': '+
-				JSON.stringify(stateObject));
+                function(thingName, stateObject) {
+                    console.log('received delta on '+thingName+': '+
+                                JSON.stringify(stateObject));
 
-		    updateShadowAttr(stateObject);
-		    clientTokenUpdate = thingShadows.update(thingName, reportData());
-		    if (clientTokenUpdate === null){
-			console.log('update shadow failed, operation still in progress');
-		    }
-		});
+                    updateShadowAttr(stateObject);
+                    clientTokenUpdate = thingShadows.update(thingName, reportData());
+                    if (clientTokenUpdate === null){
+                        console.log('update shadow failed, operation still in progress');
+                    }
+                });
 
 thingShadows.on('timeout',
-		function(thingName, clientToken) {
-		    console.log('received timeout on '+thingName+
-				' with token: '+ clientToken);
-		});
+                function(thingName, clientToken) {
+                    console.log('received timeout on '+thingName+
+                                ' with token: '+ clientToken);
+                });
 
 
 function deltaData(stateObject) {
@@ -54,10 +55,10 @@ function deltaData(stateObject) {
 function updateShadowAttr(stateObject) {
     const delta = deltaData(stateObject);
     if(delta["value1"]) {
-	value1 = delta["value1"];
+        value1 = delta["value1"];
     }
     if(delta["value2"]) {
-	value2 = delta["value2"];
+        value2 = delta["value2"];
     }
 }
 
